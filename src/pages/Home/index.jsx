@@ -17,10 +17,10 @@ function Home() {
 
   const deleteProduct = async (id) => {
     try {
-      setProducts(products.filter((p) => p.id_produk !== id));
       await axios
         .delete(`http://localhost:5000/products/${id}`)
         .then((result) => {
+          setProducts(products.filter((product) => product.id_produk !== id));
           console.log(result);
         });
     } catch (error) {
@@ -49,8 +49,9 @@ function Home() {
         </h1>
         <div className="relative">
           <Link to={"/add"}>
-            <button className="rounded-md bg-yellow-700 px-3 py-2 text-white w-[15%] absolute right-52 text-lg font-semibold flex justify-evenly items-center">
-              <span className="text-3xl mb-1">&#43;</span> Tambah Produk
+            <button className="rounded-md bg-yellow-700 px-3 py-2 text-white w-[15%] absolute right-52 text-lg font-semibold flex justify-evenly items-center hover:bg-yellow-500 hover:text-amber-800">
+              <span className="text-3xl mb-1 hover:text-amber-800">&#43;</span>{" "}
+              Tambah Produk
             </button>
           </Link>
         </div>
