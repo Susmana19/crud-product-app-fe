@@ -6,15 +6,6 @@ import Swal from "sweetalert2";
 function Home() {
   const [products, setProducts] = useState([]);
 
-  const getDataApi = async () => {
-    await axios
-      .get("http://localhost:5000/data")
-      .then((result) => {
-        setProducts(result?.data?.data);
-      })
-      .catch((err) => console.log(err));
-  };
-
   const deleteProduct = async (id) => {
     try {
       const result = await Swal.fire({
@@ -135,16 +126,6 @@ function Home() {
               {products.length === 0 && (
                 <td colSpan={6} className="text-center font-semibold">
                   <p className="text-center">Data masih kosong</p>
-                  {/* <p>
-                    Klik tombol dibawah ini untuk mengambil data dari API dan
-                    simpan ke dalam database
-                  </p>
-                  <button
-                    onClick={getDataApi}
-                    className="bg-blue-500 text-white px-5 py-3 mt-2 rounded-sm hover:bg-blue-900"
-                  >
-                    GET DATA FROM API
-                  </button> */}
                 </td>
               )}
             </tbody>
