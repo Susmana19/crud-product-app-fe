@@ -20,7 +20,6 @@ function UpdateProduct() {
   const getProductById = async () => {
     const response = await axios.get(`http://localhost:5000/products/${id}`);
 
-    console.log("data id", response.data.data);
     setName(response?.data?.data?.nama_produk);
     setPrice(response?.data?.data?.harga);
     const catName = response?.data?.data?.nama_kategori;
@@ -57,10 +56,6 @@ function UpdateProduct() {
         categoryID == "" ? getIdKategoriByCatName(categoryName) : categoryID,
       status_id: statusID == "" ? getIdStatusByStatName(statusName) : statusID,
     };
-    console.log("name_produk", data.nama_produk);
-    console.log("harga", data.harga);
-    console.log("data_kategori", data.kategori_id);
-    console.log("data_status", data.status_id);
 
     const urlProductId = `http://localhost:5000/products/${id}`;
     axios
@@ -69,10 +64,6 @@ function UpdateProduct() {
         navigate("/");
       })
       .catch((err) => {
-        setError(err.response.data.message);
-        console.log(err.response.data.message);
-        console.log(err.response.data.field);
-        console.log(err.response.data);
         setError(err.response.data);
       });
   };
@@ -83,7 +74,6 @@ function UpdateProduct() {
     await axios
       .get(urlCategory)
       .then((result) => {
-        console.log("dataCategory: ", result.data.data);
         setDataCategory(result.data.data);
       })
       .catch((error) => {
@@ -97,8 +87,7 @@ function UpdateProduct() {
     await axios
       .get(urlStatus)
       .then((result) => {
-        console.log(result.data.data);
-        setDataStatus(result.data.data);
+        setDataStatus(result?.data?.data);
       })
       .catch((error) => {
         console.error(error);
@@ -108,8 +97,6 @@ function UpdateProduct() {
   useEffect(() => {
     getCategory();
     getStatus();
-
-    setTimeout(() => {}, 5000);
     getProductById();
   }, []);
 
@@ -136,7 +123,6 @@ function UpdateProduct() {
               </label>
               <input
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setName(e.target.value);
                 }}
                 value={name}
@@ -155,11 +141,10 @@ function UpdateProduct() {
               </label>
               <input
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setPrice(e.target.value);
                 }}
                 value={price}
-                type="number"
+                type="text"
                 id="product-price"
                 className="remove-arrow border-b-2 border-[#4F5665] text-xl py-2 focus:outline-none"
                 placeholder="Masukkan Harga Produk"
@@ -180,7 +165,6 @@ function UpdateProduct() {
                 <div className="flex items-center">
                   <select
                     onChange={(e) => {
-                      console.log(e.target.value);
                       setCategoryID(e.target.value);
                     }}
                     value={
@@ -224,7 +208,6 @@ function UpdateProduct() {
                 <div className="flex items-center">
                   <select
                     onChange={(e) => {
-                      console.log(e.target.value);
                       setStatusID(e.target.value);
                     }}
                     value={

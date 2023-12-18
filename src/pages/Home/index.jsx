@@ -1,30 +1,49 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function Home() {
   const [products, setProducts] = useState([]);
 
-  // const getDataApi = () => {
-  //   axios
-  //   .get("http://localhost:5000/data")
-  //   .then((result) => {
-  //     console.log(result.data.data);
-  //     setDataProducts(result.data.data);
-  //   })
-  //   .catch((err) => console.log(err));
-  // }
+  const getDataApi = async () => {
+    await axios
+      .get("http://localhost:5000/data")
+      .then((result) => {
+        setProducts(result?.data?.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const deleteProduct = async (id) => {
     try {
-      await axios
-        .delete(`http://localhost:5000/products/${id}`)
-        .then((result) => {
-          setProducts(products.filter((product) => product.id_produk !== id));
-          console.log(result);
-        });
+      const result = await Swal.fire({
+        title: "Are you sure for delete this product?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      });
+
+      if (result.isConfirmed) {
+        const response = await axios.delete(
+          `http://localhost:5000/products/${id}`
+        );
+        const productName = response?.data?.data?.nama_produk;
+        setProducts(products.filter((product) => product.id_produk !== id));
+
+        Swal.fire("Deleted!", `${productName} has been deleted.`, "success");
+      } else {
+        Swal.fire("Cancelled", `Your data prodouct is safe :)`, "info");
+      }
     } catch (error) {
-      console.error(error);
+      Swal.fire(
+        "Error",
+        "An error occurred while deleting the resource.",
+        "error"
+      );
     }
   };
 
@@ -33,10 +52,9 @@ function Home() {
       await axios
         .get("http://localhost:5000/products")
         .then((result) => {
-          console.log("result data,", result.data.data);
           setProducts(result.data.data);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.error(err));
     };
     getProducts();
   }, []);
@@ -115,8 +133,18 @@ function Home() {
                 );
               })}
               {products.length === 0 && (
-                <td colSpan={6} className="text-center">
-                  Data masih kosong
+                <td colSpan={6} className="text-center font-semibold">
+                  <p className="text-center">Data masih kosong</p>
+                  {/* <p>
+                    Klik tombol dibawah ini untuk mengambil data dari API dan
+                    simpan ke dalam database
+                  </p>
+                  <button
+                    onClick={getDataApi}
+                    className="bg-blue-500 text-white px-5 py-3 mt-2 rounded-sm hover:bg-blue-900"
+                  >
+                    GET DATA FROM API
+                  </button> */}
                 </td>
               )}
             </tbody>

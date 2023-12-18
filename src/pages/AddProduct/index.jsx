@@ -31,10 +31,6 @@ function AddProduct() {
         navigate("/");
       })
       .catch((err) => {
-        setError(err.response.data.message);
-        console.log(err.response.data.message);
-        console.log(err.response.data.field);
-        console.log(err.response.data);
         setError(err.response.data);
       });
   };
@@ -45,7 +41,6 @@ function AddProduct() {
     await axios
       .get(urlCategory)
       .then((result) => {
-        console.log("dataCategory: ", result.data.data);
         setDataCategory(result.data.data);
       })
       .catch((error) => {
@@ -59,8 +54,7 @@ function AddProduct() {
     await axios
       .get(urlStatus)
       .then((result) => {
-        console.log(result.data.data);
-        setDataStatus(result.data.data);
+        setDataStatus(result?.data?.data);
       })
       .catch((error) => {
         console.error(error);
@@ -95,7 +89,6 @@ function AddProduct() {
               </label>
               <input
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setName(e.target.value);
                 }}
                 type="text"
@@ -113,7 +106,6 @@ function AddProduct() {
               </label>
               <input
                 onChange={(e) => {
-                  console.log(e.target.value);
                   setPrice(e.target.value);
                 }}
                 type="number"
@@ -137,7 +129,6 @@ function AddProduct() {
                 <div className="flex items-center">
                   <select
                     onChange={(e) => {
-                      console.log(e.target.value);
                       setCategoryID(e.target.value);
                     }}
                     id="product-category"
@@ -176,7 +167,6 @@ function AddProduct() {
                 <div className="flex items-center">
                   <select
                     onChange={(e) => {
-                      console.log(e.target.value);
                       setStatusID(e.target.value);
                     }}
                     id="product-status"
